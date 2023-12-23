@@ -423,6 +423,9 @@ app_free_bidirectional_reference_test(void){
 
     /* Clean up */
     glthread_remove_all_list_entries(gllist_array, 1);
+    app_check_gllist_length(gllist_array[0], 0);
+    app_check_gllist_length(gllist_array[1], 0);
+    app_check_gllist_length(gllist_array[2], 0);
 
     free(gllist_array);
 }
