@@ -23,7 +23,7 @@ typedef struct MultiRefStudent {
      * Define all required glues as one array. This
      * enables an iteration in app_extended_free_MRStudent
      * of all glues and make the code easier to read.
-     * Aditionally, if this is defined as a pointer of
+     * Additionally, if this is defined as a pointer of
      * glthread_node, then it'd become hard to calculate
      * the offset of each glue from the struct top member.
      */
