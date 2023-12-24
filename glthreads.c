@@ -89,6 +89,9 @@ glthread_get_entry(gldll *gllist, void *key){
     glthread_node *node;
     void *app_entry;
 
+    if (!gllist || !key || !gllist->key_match_cb)
+	return NULL;
+
     for(node = gllist->head; node; node = node->next){
 	app_entry = glthread_get_app_structure(gllist, node);
 	if (gllist->key_match_cb(app_entry, key) == 0){
