@@ -1,0 +1,6 @@
+*.o
+multi-ref-test-exe
+libgldll.a
+GPATH
+GTAGS
+GRTAGS
