@@ -1,6 +1,6 @@
 # Glued Doubly Linked List (Glthreads)
 
-Redefine the traditional doubly-linked list based on the glue concept, for learning. Glued DLL node do not contain a pointer to application data in its definition, unlike the node of traditional linked list. The glue node is just a set of pointers which indicates previous and next nodes and is attached to application data structure definition. Application data can be obtained from the offset calculated by the glue position and the application data address.
+Rewrite the traditional doubly-linked list based on the glue concept, for learning. Glued DLL node do not contain a pointer to application data in its definition, unlike the node of traditional linked list. The glue node is just a set of pointers which indicates previous and next nodes and is attached to application data structure definition. Application data can be obtained from the offset calculated by the glue position and the application data address.
 
 ## Benefits
 
