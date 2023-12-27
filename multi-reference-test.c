@@ -4,8 +4,12 @@
 #include "glthreads.h"
 
 #define STRLEN 64
+/*
+ * In multi-reference scenario, there should be several lists
+ * that refer to same application data at the same time.
+ * In this test program, define the number of lists as three in total.
+ */
 #define LISTS_TOTAL_NUM 3
-
 /*
  * Application-specific type for multi-reference scenario.
  *
