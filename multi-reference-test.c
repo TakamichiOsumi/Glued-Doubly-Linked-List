@@ -3,13 +3,18 @@
 #include <stdlib.h>
 #include "glthreads.h"
 
-#define STRLEN 64
 /*
- * In multi-reference scenario, there should be several lists
- * that refer to same application data at the same time.
- * In this test program, define the number of lists as three in total.
+ * In multi-reference scenario, there should be several
+ * data structures that refer to same application data
+ * at the same time. In this test program, create up
+ * to three lists.
+ *
+ * References by the three lists are implemented in the
+ * app_free_bidirectional_reference_test function.
  */
 #define LISTS_TOTAL_NUM 3
+#define STRLEN 64
+
 /*
  * Application-specific type for multi-reference scenario.
  *
@@ -36,7 +41,7 @@ typedef struct MultiRefStudent {
 } MultiRefStudent;
 
 static void
-app_print_one_student(MultiRefStudent *mrs){
+app_print_one_MRStudent(MultiRefStudent *mrs){
     printf("id : %d, name : %s\n", mrs->id, mrs->name);
 }
 
@@ -144,7 +149,7 @@ app_free_MRStudent(void **lists, void *entry){
 }
 
 static void
-app_print_all_students(gldll *gllist){
+app_print_all_MRStudents(gldll *gllist){
     glthread_node *node = gllist->head;
     MultiRefStudent *mrs;
 
@@ -153,13 +158,13 @@ app_print_all_students(gldll *gllist){
 
     while(node){
 	mrs = glthread_get_app_structure(gllist, node);
-	app_print_one_student(mrs);
+	app_print_one_MRStudent(mrs);
 	node = node->next;
     }
 }
 
 static int
-app_compare_students(void *data1, void *data2){
+app_compare_MRStudents(void *data1, void *data2){
     MultiRefStudent *s1 = data1, *s2 = data2;
 
     if (s1->id == s2->id && 
@@ -175,7 +180,7 @@ app_compare_entries_test(void){
     MultiRefStudent *entry1, *entry2;
 
     gllist_array[0] = glthread_create_list(app_search_MRStudent_by_id,
-					   app_compare_students,
+					   app_compare_MRStudents,
 					   app_free_MRStudent,
 					   offsetof(MultiRefStudent, glues));
     gllist_array[1] = gllist_array[2] = NULL;
@@ -209,7 +214,7 @@ app_free_single_entry_test(void){
     gldll **gllist_array = app_malloc(sizeof(gldll *) * LISTS_TOTAL_NUM);
 
     gllist_array[0] = glthread_create_list(app_search_MRStudent_by_id,
-					   app_compare_students,
+					   app_compare_MRStudents,
 					   app_free_MRStudent,
 					   offsetof(MultiRefStudent, glues));
     gllist_array[1] = gllist_array[2] = NULL;
@@ -244,7 +249,7 @@ app_free_single_entry_test(void){
     app_check_gllist_length(gllist_array[0], 6);
 
     /* Debug */
-    app_print_all_students(gllist_array[0]);
+    app_print_all_MRStudents(gllist_array[0]);
 
     /* Clean up */
     glthread_remove_all_list_entries(gllist_array, 0);
@@ -261,11 +266,11 @@ app_free_unidirectional_reference_test(void){
     MultiRefStudent *entry;
 
     gllist_array[0] = glthread_create_list(app_search_MRStudent_by_id,
-					   app_compare_students,
+					   app_compare_MRStudents,
 					   app_free_MRStudent,
 					   offsetof(MultiRefStudent, glues[0]));
     gllist_array[1] = glthread_create_list(app_search_MRStudent_by_id,
-					   app_compare_students,
+					   app_compare_MRStudents,
 					   app_free_MRStudent,
 					   offsetof(MultiRefStudent, glues[1]));
     gllist_array[2] = NULL;
@@ -329,15 +334,15 @@ app_free_bidirectional_reference_test(void){
     MultiRefStudent *entry;
 
     gllist_array[0] = glthread_create_list(app_search_MRStudent_by_id,
-					   app_compare_students,
+					   app_compare_MRStudents,
 					   app_free_MRStudent,
 					   offsetof(MultiRefStudent, glues[0]));
     gllist_array[1] = glthread_create_list(app_search_MRStudent_by_id,
-					   app_compare_students,
+					   app_compare_MRStudents,
 					   app_free_MRStudent,
 					   offsetof(MultiRefStudent, glues[1]));
     gllist_array[2] = glthread_create_list(app_search_MRStudent_by_id,
-					   app_compare_students,
+					   app_compare_MRStudents,
 					   app_free_MRStudent,
 					   offsetof(MultiRefStudent, glues[2]));
     /* Build the 1st list */
@@ -418,9 +423,9 @@ app_free_bidirectional_reference_test(void){
 
     /* Execute the main test */
     glthread_remove_all_list_entries(gllist_array, 0);
-    app_print_all_students(gllist_array[1]);
+    app_print_all_MRStudents(gllist_array[1]);
     app_check_gllist_length(gllist_array[1], 4);
-    app_print_all_students(gllist_array[2]);
+    app_print_all_MRStudents(gllist_array[2]);
     app_check_gllist_length(gllist_array[2], 1);
     glthread_remove_all_list_entries(gllist_array, 2);
     app_check_gllist_length(gllist_array[1], 3);
