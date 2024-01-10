@@ -45,6 +45,7 @@ int glthread_list_length(gldll *gllist);
 void *glthread_get_app_structure(gldll *gllist,
 				 glthread_node *node);
 void glthread_free_list(gldll *list);
+void glthread_check_list_len(gldll *gllist, int expected);
 void glthread_insert_entry(gldll *gllist, glthread_node *new);
 int glthread_remove_entry_from_lists(gldll **gllist_array,
 				     uintptr_t list_index, void *key);

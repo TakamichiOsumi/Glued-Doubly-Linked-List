@@ -62,6 +62,24 @@ glthread_list_length(gldll *gllist){
 }
 
 void
+glthread_check_list_len(gldll *gllist, int expected){
+    int len;
+
+    if (!gllist || !gllist->head){
+	fprintf(stderr,
+		"the passed gldll is null. do nothing\n");
+	return;
+    }
+
+    len = glthread_list_length(gllist);
+    if (len != expected){
+	fprintf(stderr, "expected the list length to be %d, but it was %d.\n",
+		expected, len);
+	exit(-1);
+    }
+}
+
+void
 glthread_insert_entry(gldll *gllist, glthread_node *new){
     glthread_node *prev = NULL, *node = NULL;
 

@@ -91,24 +91,6 @@ app_search_MRStudent_by_id(void *student, void *target_id){
 	return -1;
 }
 
-/* Utility for application tests */
-static void
-app_check_gllist_length(gldll *list, int expected){
-    int len;
-
-    if (!list)
-	return;
-
-    len = glthread_list_length(list);
-
-    if (len != expected){
-	fprintf(stderr,
-		"expected the list length to be %d, but it was %d.\n",
-		expected, len);
-	exit(-1);
-    }
-}
-
 /* free_cb callback function */
 static void
 app_free_MRStudent(void **lists, void *entry){
@@ -240,13 +222,13 @@ app_free_single_entry_test(void){
 			  GET_NEW_MRSTUDENT_GLUE_ADDR0(9, "Emma"));
 
     /* Remove entries one by one */
-    app_check_gllist_length(gllist_array[0], 9);
+    glthread_check_list_len(gllist_array[0], 9);
     glthread_remove_entry_from_lists(gllist_array, 0, (void *) 9);
-    app_check_gllist_length(gllist_array[0], 8);
+    glthread_check_list_len(gllist_array[0], 8);
     glthread_remove_entry_from_lists(gllist_array, 0, (void *) 1);
-    app_check_gllist_length(gllist_array[0], 7);
+    glthread_check_list_len(gllist_array[0], 7);
     glthread_remove_entry_from_lists(gllist_array, 0, (void *) 5);
-    app_check_gllist_length(gllist_array[0], 6);
+    glthread_check_list_len(gllist_array[0], 6);
 
     /* Debug */
     app_print_all_MRStudents(gllist_array[0]);
@@ -255,7 +237,7 @@ app_free_single_entry_test(void){
     glthread_remove_all_list_entries(gllist_array, 0);
 
     /* Were all entries deleted ? */
-    app_check_gllist_length(gllist_array[0], 0);
+    glthread_check_list_len(gllist_array[0], 0);
 
     free(gllist_array);
 }
@@ -318,9 +300,9 @@ app_free_unidirectional_reference_test(void){
     glthread_insert_entry(gllist_array[1], &entry->glues[1]);
 
     /* Execute the main test */
-    app_check_gllist_length(gllist_array[1], 8);
+    glthread_check_list_len(gllist_array[1], 8);
     glthread_remove_all_list_entries(gllist_array, 0);
-    app_check_gllist_length(gllist_array[1], 5);
+    glthread_check_list_len(gllist_array[1], 5);
 
     /* Clean up */
     glthread_remove_all_list_entries(gllist_array, 1);
@@ -417,24 +399,24 @@ app_free_bidirectional_reference_test(void){
     glthread_insert_entry(gllist_array[0], &entry->glues[0]);
 
     /* Basic checks of existing number of entries before the test */
-    app_check_gllist_length(gllist_array[0], 7);
-    app_check_gllist_length(gllist_array[1], 8);
-    app_check_gllist_length(gllist_array[2], 4);
+    glthread_check_list_len(gllist_array[0], 7);
+    glthread_check_list_len(gllist_array[1], 8);
+    glthread_check_list_len(gllist_array[2], 4);
 
     /* Execute the main test */
     glthread_remove_all_list_entries(gllist_array, 0);
     app_print_all_MRStudents(gllist_array[1]);
-    app_check_gllist_length(gllist_array[1], 4);
+    glthread_check_list_len(gllist_array[1], 4);
     app_print_all_MRStudents(gllist_array[2]);
-    app_check_gllist_length(gllist_array[2], 1);
+    glthread_check_list_len(gllist_array[2], 1);
     glthread_remove_all_list_entries(gllist_array, 2);
-    app_check_gllist_length(gllist_array[1], 3);
+    glthread_check_list_len(gllist_array[1], 3);
 
     /* Clean up */
     glthread_remove_all_list_entries(gllist_array, 1);
-    app_check_gllist_length(gllist_array[0], 0);
-    app_check_gllist_length(gllist_array[1], 0);
-    app_check_gllist_length(gllist_array[2], 0);
+    glthread_check_list_len(gllist_array[0], 0);
+    glthread_check_list_len(gllist_array[1], 0);
+    glthread_check_list_len(gllist_array[2], 0);
 
     free(gllist_array);
 }
