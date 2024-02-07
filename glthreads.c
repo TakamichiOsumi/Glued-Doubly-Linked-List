@@ -120,6 +120,25 @@ glthread_get_entry(gldll *gllist, void *key){
     return NULL;
 }
 
+glthread_node *
+glthread_get_first_entry(gldll *gllist){
+    glthread_node *first_node;
+
+    if (!gllist || !gllist->head)
+	return NULL;
+
+    first_node = gllist->head;
+
+    /* Reconnect when subsequent nodes exist */
+    if (first_node->next != NULL){
+	gllist->head = first_node->next;
+	first_node->next->prev = NULL;
+    }
+
+    return first_node;
+}
+
+
 int
 glthread_compare_entries(gldll *gllist, void *entry1, void *entry2){
     if (!gllist || !entry1 || !entry2)

@@ -50,6 +50,7 @@ void glthread_insert_entry(gldll *gllist, glthread_node *new);
 int glthread_remove_entry_from_lists(gldll **gllist_array,
 				     uintptr_t list_index, void *key);
 void *glthread_get_entry(gldll *gllist, void *key);
+glthread_node *glthread_get_first_entry(gldll *gllist);
 int glthread_compare_entries(gldll *gllist, void *entry1,void *entry2);
 void glthread_remove_all_list_entries(gldll **gllist_array,
 				      uintptr_t array_index);
