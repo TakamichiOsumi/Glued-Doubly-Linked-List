@@ -1,6 +1,29 @@
 # Glued Doubly Linked List (Glthreads)
 
-Rewrite the traditional doubly linked list based on the glue concept, for learning. Glued DLL node does not contain a pointer to application data in its definition, unlike the node of traditional linked list. The glue node is just a set of pointers which indicates its previous and next nodes and is attached as application data structure member. Application data can be obtained from the offset calculated by the glue position and the application data address.
+Rewrite the traditional doubly linked list based on the glue concept, for learning. Glued DLL node does not contain a pointer to application data in its definition, unlike the node of traditional linked list. The glue node is just a set of pointers which indicates its previous and next nodes and is attached as application data structure member.
+
+```c:glthreads.h
+typedef struct glthread_node {
+    struct glthread_node *prev;
+    struct glthread_node *next;
+} glthread_node;
+```
+
+```c:application.c
+typedef struct ApplicationData {
+    /* define some application specific data */
+    unsigned int id;
+    char name[64];
+    /* glue node */
+    glthread_node glue;
+} ApplicationData;
+```
+
+Application data can be obtained from the `glthread_get_app_structure` function that calculates the application data address with the glue offset.
+
+```c:application.c
+ApplicationData *data = (ApplicationData *) glthread_get_app_structure(glued_list, node);
+```
 
 ## Benefits
 
