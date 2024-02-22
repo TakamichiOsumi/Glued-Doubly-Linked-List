@@ -22,4 +22,4 @@ clean:
 .PHONY:test
 test: $(PROGRAM)
 	@echo "The check of multi-reference scenario is successful when it returns 0."
-	@./$(PROGRAM) &> /dev/null && echo ">>> $$?"
+	@./$(PROGRAM) > /dev/null 2>&1 && echo ">>> $$?"
